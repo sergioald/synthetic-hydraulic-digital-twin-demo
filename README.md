@@ -12,7 +12,7 @@ Many industrial and research systems generate large volumes of sensor data but c
 
 The intended audience includes research software teams, applied-AI groups, industrial digital-twin teams and organisations working on sensor monitoring, energy efficiency, anomaly detection or decision support.
 
-## Planned workflow
+## Workflow
 
 ```text
 synthetic data generation
@@ -24,9 +24,20 @@ synthetic data generation
 → recommendation/report generation
 ```
 
-## Repository status
+## Current status
 
-This first commit defines the project structure, confidentiality boundary and development standards. Source code, tests, examples and generated reports will be added in subsequent commits.
+This second commit adds a minimal working pipeline:
+
+- synthetic hydraulic sensor-data generation
+- sensor-data validation
+- time-series feature engineering
+- hydraulic and electrical energy estimation
+- rule-based and Isolation Forest anomaly detection
+- digital-twin state classification
+- recommendation and markdown report generation
+- CLI, quickstart example and tests
+
+The implementation is intentionally simple and explainable. It is designed to show software structure, reproducibility and safe publication boundaries rather than to model a real hydraulic facility.
 
 ## Confidentiality boundary
 
@@ -41,11 +52,79 @@ This repository does not contain:
 - real sensor exports
 - confidential reports or database schemas
 
-All future datasets, parameters and operating behaviours in this repository will be generated synthetically.
+All datasets, parameters and operating behaviours in this repository are generated synthetically.
 
 See [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) and [`docs/system_abstraction.md`](docs/system_abstraction.md) for the publication boundary.
 
-## Planned project structure
+## Installation
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+Install the project:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+```
+
+Install the pre-commit hooks:
+
+```bash
+pre-commit install
+```
+
+## Quickstart
+
+Run the example script:
+
+```bash
+python examples/quickstart.py
+```
+
+Or use the command-line interface:
+
+```bash
+hydraulic-twin run \
+  --config configs/default.yaml \
+  --output reports/example_report.md \
+  --data-output data/synthetic_run.csv
+```
+
+The CLI produces a synthetic dataset and a markdown report. The generated CSV is ignored by Git because it is a reproducible output.
+
+## Development
+
+Run repository checks:
+
+```bash
+pre-commit run --all-files
+```
+
+Run tests:
+
+```bash
+pytest
+```
+
+Run tests with coverage:
+
+```bash
+pytest --cov=hydraulic_twin --cov-report=term-missing
+```
+
+## Repository structure
 
 ```text
 synthetic-hydraulic-digital-twin-demo/
@@ -58,59 +137,58 @@ synthetic-hydraulic-digital-twin-demo/
     default.yaml
   docs/
     confidentiality_statement.md
-    system_abstraction.md
     development.md
+    system_abstraction.md
+  src/
+    hydraulic_twin/
+      __init__.py
+      anomaly_detection.py
+      cli.py
+      data_generation.py
+      energy_model.py
+      features.py
+      reporting.py
+      twin_state.py
+      validation.py
+  tests/
+    test_anomaly_detection.py
+    test_data_generation.py
+    test_energy_model.py
+    test_twin_state.py
+    test_validation.py
+  examples/
+    quickstart.py
+  reports/
+    example_report.md
   .github/
     workflows/
       tests.yml
 ```
 
-Later commits will add:
+## Synthetic measured variables
 
-```text
-src/hydraulic_twin/
-  data_generation.py
-  validation.py
-  features.py
-  energy_model.py
-  anomaly_detection.py
-  twin_state.py
-  reporting.py
-  cli.py
+The synthetic dataset includes variables such as:
 
-tests/
-examples/
-reports/
-```
+| Variable | Description |
+|---|---|
+| `timestamp` | Simulated measurement time |
+| `reservoir_level_pct` | Synthetic reservoir level |
+| `low_pressure_bar` | Synthetic low-pressure line pressure |
+| `flow_lpm` | Synthetic hydraulic flow rate |
+| `high_pressure_bar` | Synthetic high-pressure output |
+| `return_pressure_bar` | Synthetic return-side pressure |
+| `motor_power_kw` | Synthetic electrical power drawn |
+| `motor_speed_rpm` | Synthetic motor speed |
+| `motor_temperature_c` | Synthetic motor temperature |
+| `accumulator_pressure_bar` | Synthetic pressure-storage measurement |
+| `command_signal_pct` | Synthetic control demand signal |
+| `load_demand_kn` | Synthetic structural load demand |
+| `actuator_displacement_mm` | Synthetic actuator displacement |
+| `vibration_proxy` | Synthetic vibration/audio-like proxy |
+| `event_label` | Synthetic injected operating condition |
 
-## Development
-
-Install the development dependencies:
-
-```bash
-python -m pip install -e ".[dev]"
-```
-
-Install the pre-commit hooks:
-
-```bash
-pre-commit install
-```
-
-Run repository checks manually:
-
-```bash
-pre-commit run --all-files
-```
-
-Once source code and tests are added, run the test suite with:
-
-```bash
-pytest
-```
-
-See [`docs/development.md`](docs/development.md) for more details.
+Derived variables include hydraulic power, cumulative energy, efficiency estimates, rolling features, anomaly flags and digital-twin state labels.
 
 ## License
 
-This project is released under the MIT License. See [`LICENSE`](LICENSE).
+MIT License.

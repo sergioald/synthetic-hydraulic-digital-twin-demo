@@ -2,7 +2,7 @@
 
 This project is intended to demonstrate reproducible applied-AI research software.
 
-The first commit defines the development standards and confidentiality boundary. Source code, tests and examples will be added in later commits.
+The current implementation includes a minimal working synthetic pipeline, tests, a CLI, an example script and repository quality checks.
 
 ## Local setup
 
@@ -52,33 +52,39 @@ The checks include:
 
 ## Tests
 
-Once the source code and tests are added, run:
+Run the test suite:
 
 ```bash
 pytest
 ```
 
-Coverage checks can later be run with:
+Run tests with coverage:
 
 ```bash
 pytest --cov=hydraulic_twin --cov-report=term-missing
+```
+
+## Run the synthetic workflow
+
+Run the quickstart example:
+
+```bash
+python examples/quickstart.py
+```
+
+Or run the CLI:
+
+```bash
+hydraulic-twin run \
+  --config configs/default.yaml \
+  --output reports/example_report.md \
+  --data-output data/synthetic_run.csv
 ```
 
 ## Development principles
 
 - Keep all data synthetic.
 - Keep modules small and testable.
-- Prefer clear, explainable baselines before complex ML.
+- Prefer clear baselines before complex ML.
 - Document assumptions and validation limits.
-- Keep public names generic and non-facility-specific.
 - Do not include real FastBlade data, diagrams, parameters, control logic or confidential material.
-
-## Recommended commit sequence
-
-```text
-1. Initial project structure and confidentiality boundary
-2. Add synthetic data pipeline and baseline digital twin workflow
-3. Add tests and example report
-4. Improve documentation and validation notes
-5. Add coverage reporting and example visualisations
-```
