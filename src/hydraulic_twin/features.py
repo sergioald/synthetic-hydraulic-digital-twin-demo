@@ -43,9 +43,13 @@ def make_features(df: pd.DataFrame, *, rolling_window_samples: int = 24) -> pd.D
         result[f"{column}_rolling_mean"] = values.rolling(window, min_periods=2).mean()
         result[f"{column}_rolling_std"] = values.rolling(window, min_periods=2).std().fillna(0)
         result[f"{column}_zscore"] = (
-            (values - result[f"{column}_rolling_mean"])
-            / result[f"{column}_rolling_std"].replace(0, np.nan)
-        ).replace([np.inf, -np.inf], np.nan).fillna(0)
+            (
+                (values - result[f"{column}_rolling_mean"])
+                / result[f"{column}_rolling_std"].replace(0, np.nan)
+            )
+            .replace([np.inf, -np.inf], np.nan)
+            .fillna(0)
+        )
 
     if "efficiency_estimate" in result.columns:
         efficiency = _numeric(result, "efficiency_estimate")

@@ -20,13 +20,14 @@ def detect_rule_based_anomalies(df: pd.DataFrame) -> pd.DataFrame:
 
     critical_missing = result[CRITICAL_SENSOR_COLUMNS].isna().any(axis=1)
     low_pressure_delta = (
-        ((result.get("pressure_delta_bar", np.inf) < 60) & (result["command_signal_pct"] > 50))
-        | (result.get("pressure_command_residual_bar", 0) < -45)
-    )
+        (result.get("pressure_delta_bar", np.inf) < 60) & (result["command_signal_pct"] > 50)
+    ) | (result.get("pressure_command_residual_bar", 0) < -45)
     inefficient = result.get("efficiency_estimate", 1.0) < 0.48
     high_temperature = result["motor_temperature_c"] > 80
-    rolling_power_median = result["motor_power_kw"].rolling(48, min_periods=4).median()
-    high_energy = result["motor_power_kw"] > rolling_power_median * 1.35
+    high_energy = (
+        result["motor_power_kw"]
+        > result["motor_power_kw"].rolling(48, min_periods=4).median() * 1.35
+    )
     load_mismatch = result.get("load_command_error_kn", 0).abs() > 220
     vibration_spike = result["vibration_proxy"] > result["vibration_proxy"].quantile(0.98)
 
@@ -45,8 +46,9 @@ def detect_rule_based_anomalies(df: pd.DataFrame) -> pd.DataFrame:
             reasons[position].append(reason)
 
     result["rule_anomaly"] = [bool(row_reasons) for row_reasons in reasons]
-    result["anomaly_reason"] = [";".join(row_reasons) if row_reasons else "" for row_reasons in reasons]
-
+    result["anomaly_reason"] = [
+        ";".join(row_reasons) if row_reasons else "" for row_reasons in reasons
+    ]
     return result
 
 

@@ -4,7 +4,6 @@ from pathlib import Path
 
 from hydraulic_twin.cli import run_pipeline
 
-
 if __name__ == "__main__":
     output_path = Path("reports/example_report.md")
     data = run_pipeline(

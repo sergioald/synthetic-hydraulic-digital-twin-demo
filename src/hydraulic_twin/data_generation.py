@@ -45,7 +45,9 @@ RAW_SENSOR_COLUMNS = [
 ]
 
 
-def _read_config_value(config: Mapping[str, Any] | None, section: str, key: str, default: Any,) -> Any:
+def _read_config_value(
+    config: Mapping[str, Any] | None, section: str, key: str, default: Any
+) -> Any:
     if not config:
         return default
     return config.get(section, {}).get(key, default)
@@ -109,9 +111,7 @@ def generate_synthetic_data(
     command_signal_pct = np.clip(52 + 34 * demand_cycle + rng.normal(0, 4, n_samples), 0, 100)
     demand_fraction = command_signal_pct / 100
 
-    high_pressure_bar = np.clip(
-        35 + 210 * demand_fraction + rng.normal(0, 6, n_samples), 15, 280
-    )
+    high_pressure_bar = np.clip(35 + 210 * demand_fraction + rng.normal(0, 6, n_samples), 15, 280)
     return_pressure_bar = np.clip(7 + 12 * demand_fraction + rng.normal(0, 1.2, n_samples), 2, 35)
     low_pressure_bar = np.clip(8 + 8 * demand_fraction + rng.normal(0, 0.8, n_samples), 4, 30)
     flow_lpm = np.clip(6 + 115 * np.sqrt(demand_fraction) + rng.normal(0, 3, n_samples), 2, 140)
@@ -124,9 +124,13 @@ def generate_synthetic_data(
     )
 
     hydraulic_power_kw = high_pressure_bar * flow_lpm / 600
-    efficiency = np.clip(0.72 - 0.08 * demand_fraction + rng.normal(0, 0.015, n_samples), 0.45, 0.86)
+    efficiency = np.clip(
+        0.72 - 0.08 * demand_fraction + rng.normal(0, 0.015, n_samples), 0.45, 0.86
+    )
     standby_power_kw = float(_read_config_value(config, "energy_model", "standby_power_kw", 2.0))
-    motor_power_kw = hydraulic_power_kw / efficiency + standby_power_kw + rng.normal(0, 0.8, n_samples)
+    motor_power_kw = (
+        hydraulic_power_kw / efficiency + standby_power_kw + rng.normal(0, 0.8, n_samples)
+    )
     motor_power_kw = np.clip(motor_power_kw, 0.1, None)
 
     low_pressure_temperature_c = np.clip(
@@ -142,16 +146,19 @@ def generate_synthetic_data(
         260,
     )
     accumulator_temperature_c = np.clip(
-        low_pressure_temperature_c + 0.06 * hydraulic_power_kw + rng.normal(0, 0.4, n_samples), 18, 85
+        low_pressure_temperature_c + 0.06 * hydraulic_power_kw + rng.normal(0, 0.4, n_samples),
+        18,
+        85,
     )
-    load_demand_kn = np.clip(
-        35 + 930 * demand_fraction + rng.normal(0, 22, n_samples), 0, 1100
-    )
+    load_demand_kn = np.clip(35 + 930 * demand_fraction + rng.normal(0, 22, n_samples), 0, 1100)
     actuator_displacement_mm = np.clip(
         48 * np.sin(2 * np.pi * hours / 0.80) + rng.normal(0, 1.5, n_samples), -60, 60
     )
     vibration_proxy = np.clip(
-        0.10 + 0.0022 * motor_speed_rpm + 0.018 * hydraulic_power_kw + rng.normal(0, 0.08, n_samples),
+        0.10
+        + 0.0022 * motor_speed_rpm
+        + 0.018 * hydraulic_power_kw
+        + rng.normal(0, 0.08, n_samples),
         0,
         None,
     )

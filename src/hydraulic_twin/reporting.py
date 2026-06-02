@@ -36,10 +36,14 @@ def recommend_actions(df: pd.DataFrame) -> list[str]:
             "Review command/load response consistency during high mismatch periods."
         )
     if state_counts.get("transient_response", 0) > 0:
-        recommendations.append("Inspect short transient events and compare them with operating demand changes.")
+        recommendations.append(
+            "Inspect short transient events and compare them with operating demand changes."
+        )
 
     if not recommendations:
-        recommendations.append("No major synthetic operating-state concerns were detected in this run.")
+        recommendations.append(
+            "No major synthetic operating-state concerns were detected in this run."
+        )
 
     recommendations.append(
         "Treat all recommendations as synthetic decision-support outputs, not operational instructions."
