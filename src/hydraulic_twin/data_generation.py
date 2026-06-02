@@ -45,7 +45,7 @@ RAW_SENSOR_COLUMNS = [
 ]
 
 
-def _read_config_value(config: Mapping[str, Any] | None, section: str, key: str, default: Any) -> Any:
+def _read_config_value(config: Mapping[str, Any] | None, section: str, key: str, default: Any,) -> Any:
     if not config:
         return default
     return config.get(section, {}).get(key, default)
