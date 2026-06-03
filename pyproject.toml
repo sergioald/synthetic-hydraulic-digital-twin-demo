@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "synthetic-hydraulic-digital-twin-demo"
-version = "0.2.0"
+version = "0.1.0"
 description = "Synthetic hydraulic digital-twin demo for sensor validation, energy modelling, anomaly detection and reporting."
 readme = "README.md"
 requires-python = ">=3.10"
