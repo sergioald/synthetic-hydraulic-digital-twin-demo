@@ -157,6 +157,8 @@ synthetic-hydraulic-digital-twin-demo/
   README.md
   pyproject.toml
   LICENSE
+  CITATION.cff
+  CHANGELOG.md
   .gitignore
   .pre-commit-config.yaml
   configs/
@@ -169,6 +171,7 @@ synthetic-hydraulic-digital-twin-demo/
     portfolio_summary.md
     synthetic_data_design.md
     system_abstraction.md
+    roadmap.md
   src/
     hydraulic_twin/
       __init__.py
