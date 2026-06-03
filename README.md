@@ -26,7 +26,7 @@ synthetic data generation
 
 ## Current status
 
-This second commit adds a minimal working pipeline:
+The current version provides a minimal working synthetic digital-twin pipeline plus technical documentation and example visual outputs:
 
 - synthetic hydraulic sensor-data generation
 - sensor-data validation
@@ -36,6 +36,8 @@ This second commit adds a minimal working pipeline:
 - digital-twin state classification
 - recommendation and markdown report generation
 - CLI, quickstart example and tests
+- model-validation, synthetic-data and anomaly-detection documentation
+- portfolio summary and example figures
 
 The implementation is intentionally simple and explainable. It is designed to show software structure, reproducibility and safe publication boundaries rather than to model a real hydraulic facility.
 
@@ -104,6 +106,30 @@ hydraulic-twin run \
 
 The CLI produces a synthetic dataset and a markdown report. The generated CSV is ignored by Git because it is a reproducible output.
 
+Regenerate the example portfolio figures:
+
+```bash
+python examples/create_example_figures.py
+```
+
+## Example outputs
+
+The repository includes static example figures generated from the synthetic pipeline. They are intended to make the project understandable without running the code first.
+
+### Synthetic anomaly and digital-twin state timeline
+
+![Synthetic anomaly and digital-twin state timeline](reports/figures/anomaly_timeline.png)
+
+### Synthetic energy-efficiency summary
+
+![Synthetic energy-efficiency summary](reports/figures/energy_efficiency_summary.png)
+
+### Synthetic pressure-flow overview
+
+![Synthetic pressure-flow overview](reports/figures/pressure_flow_overview.png)
+
+See [`docs/portfolio_summary.md`](docs/portfolio_summary.md) for a short reviewer-focused explanation of the project outputs and portfolio value.
+
 ## Development
 
 Run repository checks:
@@ -136,8 +162,12 @@ synthetic-hydraulic-digital-twin-demo/
   configs/
     default.yaml
   docs/
+    anomaly_detection_method.md
     confidentiality_statement.md
     development.md
+    model_validation.md
+    portfolio_summary.md
+    synthetic_data_design.md
     system_abstraction.md
   src/
     hydraulic_twin/
@@ -157,9 +187,14 @@ synthetic-hydraulic-digital-twin-demo/
     test_twin_state.py
     test_validation.py
   examples/
+    create_example_figures.py
     quickstart.py
   reports/
     example_report.md
+    figures/
+      anomaly_timeline.png
+      energy_efficiency_summary.png
+      pressure_flow_overview.png
   .github/
     workflows/
       tests.yml
