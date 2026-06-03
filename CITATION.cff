@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+title: "Synthetic Hydraulic Digital Twin Demo"
+version: "0.1.0"
+date-released: "2026-06-03"
+
+authors:
+  - family-names: "López Dubón"
+    given-names: "Sergio"
+
+abstract: >
+  A confidentiality-safe Python research-software demonstration of a synthetic
+  hydraulic digital-twin workflow. The project includes synthetic sensor data
+  generation, validation, feature engineering, energy modelling, anomaly
+  detection, twin-state classification, automated reporting, example visual
+  outputs, tests and continuous integration.
+
+keywords:
+  - digital twin
+  - synthetic data
+  - anomaly detection
+  - sensor data
+  - energy modelling
+  - time series
+  - research software
+  - hydraulic systems
+  - Python
+
+license: MIT
+repository-code: "https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo"
+url: "https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo"
