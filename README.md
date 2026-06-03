@@ -1,4 +1,5 @@
 # Synthetic Hydraulic Digital Twin Demo
+[![Tests](https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo/actions/workflows/tests.yml/badge.svg)](https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo/actions/workflows/tests.yml)
 
 A synthetic applied-AI research software demo for sensor-heavy hydraulic systems.
 
