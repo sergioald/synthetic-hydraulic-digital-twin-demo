@@ -1,102 +1,111 @@
 # Synthetic Hydraulic Digital Twin Demo
+
 [![Tests](https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo/actions/workflows/tests.yml/badge.svg)](https://github.com/sergioald/synthetic-hydraulic-digital-twin-demo/actions/workflows/tests.yml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A synthetic applied-AI research software demo for sensor-heavy hydraulic systems.
+A **synthetic applied-AI / research-software demo** for sensor-heavy hydraulic systems.
 
-This repository demonstrates a reproducible Python workflow for generating synthetic hydraulic-system time series, validating sensor data, estimating energy use, detecting anomalies, classifying digital-twin operating states and producing engineering-style reports.
+This repository shows how a digital-twin-style workflow can generate synthetic time-series data, validate sensor signals, estimate energy use, detect anomalies, classify operating states, and produce engineering-style reports — without exposing real facility data or proprietary control logic.
 
-The project is designed as a public portfolio/research-software example. It is inspired by general experience with structural testing, monitoring systems and digital-twin workflows, but it does **not** reproduce any real facility, dataset, control system or proprietary architecture.
+<p align="center">
+  <img src="docs/assets/readme_workflow.png" alt="Synthetic hydraulic digital-twin workflow" width="900">
+</p>
+
+<p align="center">
+  <em>A safe, reproducible public workflow for demonstrating applied AI on hydraulic sensor data.</em>
+</p>
+
+---
 
 ## Why this project exists
 
-Many industrial and research systems generate large volumes of sensor data but cannot share the real data, controls or infrastructure publicly. This project shows how to communicate applied-AI capability safely using fully synthetic data and a transparent, testable software structure.
+Real industrial and research facilities often produce valuable sensor data, but the raw data, controls, infrastructure details, and operating conditions cannot always be shared publicly.
 
-The intended audience includes research software teams, applied-AI groups, industrial digital-twin teams and organisations working on sensor monitoring, energy efficiency, anomaly detection or decision support.
+This project demonstrates the same kind of applied-AI workflow using **fully synthetic data**. It is designed for portfolio review, research-software demonstration, teaching, and method discussion.
 
-## Workflow
+The project is intentionally explainable rather than physically exhaustive. It focuses on:
 
-```text
-synthetic data generation
-→ data validation
-→ feature engineering
-→ hydraulic/electrical energy estimation
-→ anomaly detection
-→ digital-twin state classification
-→ recommendation/report generation
-```
+- clean software structure;
+- reproducible examples;
+- safe publication boundaries;
+- sensor-data validation;
+- energy and efficiency summaries;
+- anomaly detection and state classification;
+- report generation for engineering review.
 
-## Current status
+For a more detailed reviewer-facing explanation, see [`docs/portfolio_summary.md`](docs/portfolio_summary.md).
 
-The current version provides a minimal working synthetic digital-twin pipeline plus technical documentation and example visual outputs:
+---
 
-- synthetic hydraulic sensor-data generation
-- sensor-data validation
-- time-series feature engineering
-- hydraulic and electrical energy estimation
-- rule-based and Isolation Forest anomaly detection
-- digital-twin state classification
-- recommendation and markdown report generation
-- CLI, quickstart example and tests
-- model-validation, synthetic-data and anomaly-detection documentation
-- portfolio summary and example figures
+## What this repository demonstrates
 
-The implementation is intentionally simple and explainable. It is designed to show software structure, reproducibility and safe publication boundaries rather than to model a real hydraulic facility.
+| Area | What is included |
+|---|---|
+| Synthetic data | Hydraulic-style time-series variables generated without real facility data |
+| Validation | Range, missing-value, and consistency checks for sensor data |
+| Feature engineering | Rolling statistics and derived engineering signals |
+| Energy modelling | Electrical and hydraulic energy estimates plus efficiency summaries |
+| Anomaly detection | Rule-based checks and an Isolation Forest baseline |
+| Digital-twin states | Explainable state labels for review and reporting |
+| Reporting | Markdown report generation with recommendations and summary metrics |
+| Research software | CLI, config file, tests, docs, citation metadata, and reproducible examples |
 
-## Confidentiality boundary
+---
 
-This repository does not contain:
+## Example outputs
 
-- real FastBlade data
-- real University of Edinburgh code
-- partner or industrial data
-- proprietary control logic
-- real facility diagrams
-- real hydraulic parameters
-- real sensor exports
-- confidential reports or database schemas
+The figures below are generated from the repository's synthetic example run. They are included so the project can be understood before running the code.
 
-All datasets, parameters and operating behaviours in this repository are generated synthetically.
+### Digital-twin state counts
 
-See [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) and [`docs/system_abstraction.md`](docs/system_abstraction.md) for the publication boundary.
+<p align="center">
+  <img src="docs/assets/readme_state_counts.png" alt="Example digital-twin state counts" width="850">
+</p>
 
-## Installation
+<p align="center">
+  <em>Example operating-state counts generated from synthetic data.</em>
+</p>
 
-Create and activate a virtual environment:
+### Energy-efficiency summary
+
+<p align="center">
+  <img src="docs/assets/readme_energy_summary.png" alt="Example energy-efficiency summary" width="760">
+</p>
+
+<p align="center">
+  <em>Example electrical/hydraulic energy estimates and mean efficiency from the synthetic report.</em>
+</p>
+
+---
+
+## Quick start
+
+### 1. Create an environment
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
 ```
 
 On Windows PowerShell:
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-Install the project:
-
-```bash
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
-Install the pre-commit hooks:
-
-```bash
-pre-commit install
-```
-
-## Quickstart
-
-Run the example script:
+### 2. Run the example workflow
 
 ```bash
 python examples/quickstart.py
 ```
 
-Or use the command-line interface:
+Or run the CLI directly:
 
 ```bash
 hydraulic-twin run \
@@ -105,39 +114,78 @@ hydraulic-twin run \
   --data-output data/synthetic_run.csv
 ```
 
-The CLI produces a synthetic dataset and a markdown report. The generated CSV is ignored by Git because it is a reproducible output.
+On Windows PowerShell:
 
-Regenerate the example portfolio figures:
+```powershell
+hydraulic-twin run `
+  --config configs/default.yaml `
+  --output reports/example_report.md `
+  --data-output data/synthetic_run.csv
+```
+
+The generated CSV is ignored by Git because it is a reproducible output.
+
+### 3. Regenerate example figures
 
 ```bash
 python examples/create_example_figures.py
 ```
 
-## Example outputs
+---
 
-The repository includes static example figures generated from the synthetic pipeline. They are intended to make the project understandable without running the code first.
+## Main outputs
 
-### Synthetic anomaly and digital-twin state timeline
+| Output | Purpose |
+|---|---|
+| `data/synthetic_run.csv` | Generated synthetic sensor dataset |
+| `reports/example_report.md` | Markdown engineering-style summary report |
+| `reports/figures/` | Example portfolio figures generated from synthetic data |
+| `docs/portfolio_summary.md` | Reviewer-facing explanation of the project value |
 
-![Synthetic anomaly and digital-twin state timeline](reports/figures/anomaly_timeline.png)
+---
 
-### Synthetic energy-efficiency summary
+## Synthetic data boundary
 
-![Synthetic energy-efficiency summary](reports/figures/energy_efficiency_summary.png)
+This repository does **not** contain:
 
-### Synthetic pressure-flow overview
+- real FastBlade data;
+- real University of Edinburgh code;
+- partner or industrial datasets;
+- proprietary control logic;
+- real facility diagrams;
+- real hydraulic parameters;
+- real sensor exports;
+- confidential reports or database schemas.
 
-![Synthetic pressure-flow overview](reports/figures/pressure_flow_overview.png)
+All datasets, parameters, operating behaviours, labels, figures, and reports in this repository are synthetic.
 
-See [`docs/portfolio_summary.md`](docs/portfolio_summary.md) for a short reviewer-focused explanation of the project outputs and portfolio value.
+See:
+
+- [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md)
+- [`docs/system_abstraction.md`](docs/system_abstraction.md)
+- [`docs/synthetic_data_design.md`](docs/synthetic_data_design.md)
+
+---
+
+## Method overview
+
+The workflow is organised as a small but complete research-software pipeline:
+
+```text
+synthetic data generation
+→ sensor validation
+→ feature engineering
+→ hydraulic/electrical energy estimation
+→ anomaly detection
+→ digital-twin state classification
+→ markdown report generation
+```
+
+The anomaly-detection layer combines transparent rule-based checks with a simple Isolation Forest baseline. The digital-twin state classifier converts validation, anomaly, and energy-efficiency signals into interpretable state labels such as `normal`, `sensor_issue`, `pressure_loss_suspected`, and `inefficient_operation`.
+
+---
 
 ## Development
-
-Run repository checks:
-
-```bash
-pre-commit run --all-files
-```
 
 Run tests:
 
@@ -151,6 +199,14 @@ Run tests with coverage:
 pytest --cov=hydraulic_twin --cov-report=term-missing
 ```
 
+Run formatting/lint checks:
+
+```bash
+pre-commit run --all-files
+```
+
+---
+
 ## Repository structure
 
 ```text
@@ -160,74 +216,80 @@ synthetic-hydraulic-digital-twin-demo/
   LICENSE
   CITATION.cff
   CHANGELOG.md
-  .gitignore
-  .pre-commit-config.yaml
   configs/
     default.yaml
   docs/
+    portfolio_summary.md
     anomaly_detection_method.md
     confidentiality_statement.md
     development.md
     model_validation.md
-    portfolio_summary.md
     synthetic_data_design.md
     system_abstraction.md
     roadmap.md
-  src/
-    hydraulic_twin/
-      __init__.py
-      anomaly_detection.py
-      cli.py
-      data_generation.py
-      energy_model.py
-      features.py
-      reporting.py
-      twin_state.py
-      validation.py
-  tests/
-    test_anomaly_detection.py
-    test_data_generation.py
-    test_energy_model.py
-    test_twin_state.py
-    test_validation.py
+    assets/
+      readme_workflow.png
+      readme_state_counts.png
+      readme_energy_summary.png
   examples/
-    create_example_figures.py
     quickstart.py
+    create_example_figures.py
   reports/
     example_report.md
     figures/
-      anomaly_timeline.png
-      energy_efficiency_summary.png
-      pressure_flow_overview.png
-  .github/
-    workflows/
-      tests.yml
+  src/hydraulic_twin/
+    anomaly_detection.py
+    cli.py
+    data_generation.py
+    energy_model.py
+    features.py
+    reporting.py
+    twin_state.py
+    validation.py
+  tests/
 ```
 
-## Synthetic measured variables
+---
 
-The synthetic dataset includes variables such as:
+## Documentation
 
-| Variable | Description |
-|---|---|
-| `timestamp` | Simulated measurement time |
-| `reservoir_level_pct` | Synthetic reservoir level |
-| `low_pressure_bar` | Synthetic low-pressure line pressure |
-| `flow_lpm` | Synthetic hydraulic flow rate |
-| `high_pressure_bar` | Synthetic high-pressure output |
-| `return_pressure_bar` | Synthetic return-side pressure |
-| `motor_power_kw` | Synthetic electrical power drawn |
-| `motor_speed_rpm` | Synthetic motor speed |
-| `motor_temperature_c` | Synthetic motor temperature |
-| `accumulator_pressure_bar` | Synthetic pressure-storage measurement |
-| `command_signal_pct` | Synthetic control demand signal |
-| `load_demand_kn` | Synthetic structural load demand |
-| `actuator_displacement_mm` | Synthetic actuator displacement |
-| `vibration_proxy` | Synthetic vibration/audio-like proxy |
-| `event_label` | Synthetic injected operating condition |
+Useful supporting documents:
 
-Derived variables include hydraulic power, cumulative energy, efficiency estimates, rolling features, anomaly flags and digital-twin state labels.
+- [`docs/portfolio_summary.md`](docs/portfolio_summary.md) — reviewer-facing project explanation
+- [`docs/synthetic_data_design.md`](docs/synthetic_data_design.md) — synthetic data design notes
+- [`docs/anomaly_detection_method.md`](docs/anomaly_detection_method.md) — anomaly-detection approach
+- [`docs/model_validation.md`](docs/model_validation.md) — validation and limitations
+- [`docs/system_abstraction.md`](docs/system_abstraction.md) — abstraction boundary
+- [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) — publication boundary
+- [`docs/development.md`](docs/development.md) — development workflow
+- [`docs/roadmap.md`](docs/roadmap.md) — possible next steps
+
+---
+
+## Status and limitations
+
+This is a **synthetic portfolio and research-software demonstration**, not a calibrated hydraulic model and not an operational digital twin.
+
+The current implementation prioritises:
+
+- explainability;
+- reproducibility;
+- safe public communication;
+- clean project structure;
+- testable applied-AI workflow design.
+
+Any engineering conclusions from the example report should be interpreted as synthetic decision-support outputs only.
+
+---
+
+## Citation / acknowledgement
+
+This project was developed as a public portfolio and research-software example for applied AI, sensor data, anomaly detection, and digital-twin-style engineering workflows.
+
+See [`CITATION.cff`](CITATION.cff) for citation metadata.
+
+---
 
 ## License
 
-MIT License.
+MIT License. See [`LICENSE`](LICENSE).
