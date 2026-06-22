@@ -48,6 +48,8 @@ data/*.csv
 data/scenarios/
 
 # Reproducible generated reports
+reports/*.html
+reports/**/*.html
 reports/scenarios/
 
 # Local scratch outputs

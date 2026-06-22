@@ -13,7 +13,7 @@ from hydraulic_twin.anomaly_detection import detect_anomalies
 from hydraulic_twin.data_generation import generate_synthetic_data
 from hydraulic_twin.energy_model import estimate_energy
 from hydraulic_twin.features import make_features
-from hydraulic_twin.reporting import generate_report, recommend_actions
+from hydraulic_twin.reporting import generate_html_report, generate_report, recommend_actions
 from hydraulic_twin.twin_state import classify_twin_state
 from hydraulic_twin.validation import validate_sensor_data
 
@@ -33,6 +33,7 @@ def run_pipeline(
     config_path: str | Path = "configs/default.yaml",
     output_path: str | Path = "reports/example_report.md",
     data_output_path: str | Path | None = None,
+    html_output_path: str | Path | None = None,
 ) -> pd.DataFrame:
     """Run the complete synthetic digital-twin workflow."""
 
@@ -63,6 +64,14 @@ def run_pipeline(
     recommendations = recommend_actions(classified)
     generate_report(classified, validation_result, recommendations, output_path=output_path)
 
+    if html_output_path is not None:
+        generate_html_report(
+            classified,
+            validation_result,
+            recommendations,
+            output_path=html_output_path,
+        )
+
     if data_output_path is not None:
         path = Path(data_output_path)
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -85,6 +94,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", default="reports/example_report.md", help="path for markdown report"
     )
     run_parser.add_argument(
+        "--html-output", default=None, help="optional path for generated HTML report"
+    )
+    run_parser.add_argument(
         "--data-output", default=None, help="optional path for generated synthetic CSV output"
     )
     return parser
@@ -101,11 +113,15 @@ def main(argv: list[str] | None = None) -> None:
             config_path=args.config,
             output_path=args.output,
             data_output_path=args.data_output,
+            html_output_path=args.html_output,
         )
         anomaly_count = int(data["combined_anomaly"].sum())
+        report_targets = f"report to {args.output}"
+        if args.html_output is not None:
+            report_targets += f" and HTML report to {args.html_output}"
         print(
             f"Generated {len(data)} synthetic samples, flagged {anomaly_count} anomalies, "
-            f"and wrote report to {args.output}."
+            f"and wrote {report_targets}."
         )
         return
 
