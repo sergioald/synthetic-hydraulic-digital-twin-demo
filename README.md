@@ -372,7 +372,6 @@ Useful supporting documents:
 - [`docs/roadmap.md`](docs/roadmap.md) — suggested future improvements
 - [`docs/case_study.md`](docs/case_study.md) — reviewer-facing applied-AI case study
 - [`docs/reviewer_guide.md`](docs/reviewer_guide.md) — quick guide for technical reviewers
-- [`docs/github_repository_settings.md`](docs/github_repository_settings.md) — recommended GitHub description, topics and release wording
 - [`docs/release_checklist_v0_2_0.md`](docs/release_checklist_v0_2_0.md) — release checklist for `v0.2.0`
 
 ---
