@@ -36,6 +36,12 @@ demonstration.
 - Reviewer guide for quick portfolio and research-software assessment.
 - Release checklist for preparing a public `v0.2.0` GitHub release.
 - GitHub repository description and topic recommendations.
+- Model-card documentation describing intended use, out-of-scope use, data,
+  outputs, evaluation limits and safety considerations.
+- Optional self-contained HTML report generation.
+- CLI `--html-output` argument for writing an HTML report alongside the Markdown report.
+- HTML reporting documentation.
+- Tests for HTML report generation and CLI HTML output.
 
 ### Changed
 
@@ -45,6 +51,8 @@ demonstration.
   applied-AI and digital-twin workflows for sensor-heavy hydraulic systems.
 - Made testing and validation claims more explicit to avoid implying operational
   calibration or safety-critical readiness.
+- Reporting internals now share summary metrics across Markdown and HTML outputs.
+- Generated HTML reports are ignored by Git by default.
 
 ### Notes
 
@@ -54,6 +62,8 @@ demonstration.
 - The repository still does not include real FastBlade data, partner data,
   facility-specific parameters, raw sensor exports, proprietary control logic or
   confidential operational documentation.
+- The optional HTML report is a presentation format for synthetic outputs, not
+  evidence of operational validation.
 
 ## [0.1.0] - 2026-06-03
 
