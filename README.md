@@ -37,6 +37,10 @@ The project is intentionally explainable rather than physically exhaustive. It f
 
 For a more detailed reviewer-facing explanation, see [`docs/portfolio_summary.md`](docs/portfolio_summary.md).
 
+For reviewers, start with [`docs/case_study.md`](docs/case_study.md) and
+[`docs/reviewer_guide.md`](docs/reviewer_guide.md). These explain the project
+as a confidentiality-safe applied-AI case study and clarify what should, and
+should not, be inferred from the synthetic workflow.
 ---
 
 ## What this repository demonstrates
@@ -366,6 +370,10 @@ Useful supporting documents:
 - [`docs/model_validation.md`](docs/model_validation.md) — validation and limitation notes
 - [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) — publication boundary
 - [`docs/roadmap.md`](docs/roadmap.md) — suggested future improvements
+- [`docs/case_study.md`](docs/case_study.md) — reviewer-facing applied-AI case study
+- [`docs/reviewer_guide.md`](docs/reviewer_guide.md) — quick guide for technical reviewers
+- [`docs/github_repository_settings.md`](docs/github_repository_settings.md) — recommended GitHub description, topics and release wording
+- [`docs/release_checklist_v0_2_0.md`](docs/release_checklist_v0_2_0.md) — release checklist for `v0.2.0`
 
 ---
 
