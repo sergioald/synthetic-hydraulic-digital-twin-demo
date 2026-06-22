@@ -6,6 +6,55 @@ This project follows a simple versioned release structure. The first public
 release is intended as a confidentiality-safe portfolio and research-software
 demonstration.
 
+## [0.2.0] - Unreleased
+
+### Added
+
+- Synthetic scenario configurations for normal operation and illustrative
+  fault-like conditions:
+  - pressure loss
+  - sensor drift
+  - missing critical data
+  - pump degradation
+  - abnormal energy use
+  - load-response anomaly
+  - transient response
+  - mixed synthetic faults
+- Scenario runner for generating one report and one synthetic CSV output per
+  scenario.
+- Scenario-configuration documentation explaining purpose, usage and
+  interpretation boundaries.
+- Validation-scope documentation clarifying what the tests do and do not prove.
+- Unit tests for feature engineering, reporting and recommendations.
+- Integration tests for configured full-pipeline execution.
+- CLI smoke test.
+- Scenario-configuration tests.
+- README scenario overview section and scenario workflow figure.
+- Repository `.gitignore` rules for Python caches, build artifacts and
+  reproducible generated outputs.
+- Reviewer-facing case-study documentation.
+- Reviewer guide for quick portfolio and research-software assessment.
+- Release checklist for preparing a public `v0.2.0` GitHub release.
+- GitHub repository description and topic recommendations.
+
+### Changed
+
+- Improved README structure to make the scenario-based workflow, validation
+  boundaries and generated-output policy easier to understand.
+- Strengthened the repository's position as a public, synthetic analogue of
+  applied-AI and digital-twin workflows for sensor-heavy hydraulic systems.
+- Made testing and validation claims more explicit to avoid implying operational
+  calibration or safety-critical readiness.
+
+### Notes
+
+- The scenario configurations are synthetic demonstrations only.
+- Generated scenario CSV files and scenario reports are reproducible outputs and
+  should normally not be committed.
+- The repository still does not include real FastBlade data, partner data,
+  facility-specific parameters, raw sensor exports, proprietary control logic or
+  confidential operational documentation.
+
 ## [0.1.0] - 2026-06-03
 
 ### Added
