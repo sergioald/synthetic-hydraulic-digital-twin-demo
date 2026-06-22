@@ -32,6 +32,7 @@ The project is intentionally explainable rather than physically exhaustive. It f
 - sensor-data validation;
 - energy and efficiency summaries;
 - anomaly detection and state classification;
+- scenario-based synthetic demonstrations;
 - report generation for engineering review.
 
 For a more detailed reviewer-facing explanation, see [`docs/portfolio_summary.md`](docs/portfolio_summary.md).
@@ -43,13 +44,14 @@ For a more detailed reviewer-facing explanation, see [`docs/portfolio_summary.md
 | Area | What is included |
 |---|---|
 | Synthetic data | Hydraulic-style time-series variables generated without real facility data |
+| Scenario configs | Reproducible YAML configurations for normal and fault-like synthetic scenarios |
 | Validation | Range, missing-value, and consistency checks for sensor data |
 | Feature engineering | Rolling statistics and derived engineering signals |
 | Energy modelling | Electrical and hydraulic energy estimates plus efficiency summaries |
 | Anomaly detection | Rule-based checks and an Isolation Forest baseline |
 | Digital-twin states | Explainable state labels for review and reporting |
 | Reporting | Markdown report generation with recommendations and summary metrics |
-| Research software | CLI, config file, tests, docs, citation metadata, and reproducible examples |
+| Research software | CLI, config files, tests, docs, citation metadata, and reproducible examples |
 
 ---
 
@@ -75,6 +77,16 @@ The figures below are generated from the repository's synthetic example run. The
 
 <p align="center">
   <em>Example electrical/hydraulic energy estimates and mean efficiency from the synthetic report.</em>
+</p>
+
+### Scenario overview
+
+<p align="center">
+  <img src="docs/assets/readme_scenario_overview.svg" alt="Synthetic scenario configuration overview" width="900">
+</p>
+
+<p align="center">
+  <em>Scenario-specific YAML files exercise the same pipeline under different synthetic operating conditions.</em>
 </p>
 
 ---
@@ -125,11 +137,58 @@ hydraulic-twin run `
 
 The generated CSV is ignored by Git because it is a reproducible output.
 
-### 3. Regenerate example figures
+### 3. Run one synthetic scenario
+
+```bash
+hydraulic-twin run \
+  --config configs/scenarios/pressure_loss.yaml \
+  --output reports/scenarios/pressure_loss_report.md \
+  --data-output data/scenarios/pressure_loss_synthetic_run.csv
+```
+
+On Windows PowerShell:
+
+```powershell
+hydraulic-twin run `
+  --config configs/scenarios/pressure_loss.yaml `
+  --output reports/scenarios/pressure_loss_report.md `
+  --data-output data/scenarios/pressure_loss_synthetic_run.csv
+```
+
+### 4. Run all synthetic scenarios
+
+```bash
+python examples/run_scenarios.py
+```
+
+This generates one Markdown report and one synthetic CSV output per scenario. The generated outputs are reproducible and are ignored by Git.
+
+### 5. Regenerate example figures
 
 ```bash
 python examples/create_example_figures.py
+python examples/create_scenario_overview_figure.py
 ```
+
+---
+
+## Synthetic scenarios
+
+The scenario files in `configs/scenarios/` make the workflow easier to review because they show how the same pipeline behaves under different illustrative conditions.
+
+| Scenario | Configuration | Purpose |
+|---|---|---|
+| Normal baseline | `configs/scenarios/normal.yaml` | Synthetic run with no injected fault event beyond normal operation |
+| Pressure loss | `configs/scenarios/pressure_loss.yaml` | Illustrative pressure-loss event |
+| Sensor drift | `configs/scenarios/sensor_drift.yaml` | Illustrative pressure-sensor drift |
+| Missing data | `configs/scenarios/missing_data.yaml` | Illustrative missing critical sensor values |
+| Pump degradation | `configs/scenarios/pump_degradation.yaml` | Illustrative temperature, vibration, and efficiency degradation |
+| Abnormal energy | `configs/scenarios/abnormal_energy.yaml` | Illustrative high energy-use period |
+| Load anomaly | `configs/scenarios/load_anomaly.yaml` | Illustrative command/load mismatch |
+| Transient event | `configs/scenarios/transient_event.yaml` | Illustrative short transient response |
+| Mixed faults | `configs/scenarios/mixed_faults.yaml` | Combined synthetic scenario containing multiple illustrative events |
+
+For details, see [`docs/scenario_configs.md`](docs/scenario_configs.md).
 
 ---
 
@@ -140,7 +199,13 @@ python examples/create_example_figures.py
 | `data/synthetic_run.csv` | Generated synthetic sensor dataset |
 | `reports/example_report.md` | Markdown engineering-style summary report |
 | `reports/figures/` | Example portfolio figures generated from synthetic data |
+| `reports/scenarios/` | Generated scenario-specific Markdown reports |
+| `data/scenarios/` | Generated scenario-specific synthetic CSV outputs |
 | `docs/portfolio_summary.md` | Reviewer-facing explanation of the project value |
+| `docs/scenario_configs.md` | Scenario-configuration guide |
+| `docs/validation_scope.md` | Explanation of what the tests do and do not prove |
+
+Generated CSV and scenario-report outputs are reproducible and are intentionally ignored by Git.
 
 ---
 
@@ -164,6 +229,8 @@ See:
 - [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md)
 - [`docs/system_abstraction.md`](docs/system_abstraction.md)
 - [`docs/synthetic_data_design.md`](docs/synthetic_data_design.md)
+- [`docs/scenario_configs.md`](docs/scenario_configs.md)
+- [`docs/validation_scope.md`](docs/validation_scope.md)
 
 ---
 
@@ -182,6 +249,21 @@ synthetic data generation
 ```
 
 The anomaly-detection layer combines transparent rule-based checks with a simple Isolation Forest baseline. The digital-twin state classifier converts validation, anomaly, and energy-efficiency signals into interpretable state labels such as `normal`, `sensor_issue`, `pressure_loss_suspected`, and `inefficient_operation`.
+
+---
+
+## Testing and validation scope
+
+The test suite includes:
+
+- unit tests for data generation, validation, feature engineering, energy estimation, anomaly detection, reporting, and state classification;
+- integration tests for the configured full pipeline;
+- smoke tests for quick command-line execution;
+- scenario-configuration tests.
+
+The tests verify software behaviour and reproducibility of the synthetic workflow. They do **not** prove physical calibration, operational diagnostic reliability, safety-critical suitability, or validity against real facility data.
+
+For details, see [`docs/validation_scope.md`](docs/validation_scope.md).
 
 ---
 
@@ -205,6 +287,12 @@ Run formatting/lint checks:
 pre-commit run --all-files
 ```
 
+Run scenario tests only:
+
+```bash
+pytest tests/test_scenario_configs.py
+```
+
 ---
 
 ## Repository structure
@@ -218,22 +306,37 @@ synthetic-hydraulic-digital-twin-demo/
   CHANGELOG.md
   configs/
     default.yaml
+    scenarios/
+      normal.yaml
+      pressure_loss.yaml
+      sensor_drift.yaml
+      missing_data.yaml
+      pump_degradation.yaml
+      abnormal_energy.yaml
+      load_anomaly.yaml
+      transient_event.yaml
+      mixed_faults.yaml
   docs/
     portfolio_summary.md
     anomaly_detection_method.md
     confidentiality_statement.md
     development.md
     model_validation.md
+    scenario_configs.md
     synthetic_data_design.md
     system_abstraction.md
+    validation_scope.md
     roadmap.md
     assets/
       readme_workflow.png
       readme_state_counts.png
       readme_energy_summary.png
+      readme_scenario_overview.svg
   examples/
     quickstart.py
     create_example_figures.py
+    create_scenario_overview_figure.py
+    run_scenarios.py
   reports/
     example_report.md
     figures/
@@ -257,39 +360,21 @@ Useful supporting documents:
 
 - [`docs/portfolio_summary.md`](docs/portfolio_summary.md) — reviewer-facing project explanation
 - [`docs/synthetic_data_design.md`](docs/synthetic_data_design.md) — synthetic data design notes
+- [`docs/scenario_configs.md`](docs/scenario_configs.md) — scenario-configuration guide
+- [`docs/validation_scope.md`](docs/validation_scope.md) — what the tests do and do not prove
 - [`docs/anomaly_detection_method.md`](docs/anomaly_detection_method.md) — anomaly-detection approach
-- [`docs/model_validation.md`](docs/model_validation.md) — validation and limitations
-- [`docs/system_abstraction.md`](docs/system_abstraction.md) — abstraction boundary
+- [`docs/model_validation.md`](docs/model_validation.md) — validation and limitation notes
 - [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) — publication boundary
-- [`docs/development.md`](docs/development.md) — development workflow
-- [`docs/roadmap.md`](docs/roadmap.md) — possible next steps
+- [`docs/roadmap.md`](docs/roadmap.md) — suggested future improvements
 
 ---
 
-## Status and limitations
+## Citation
 
-This is a **synthetic portfolio and research-software demonstration**, not a calibrated hydraulic model and not an operational digital twin.
-
-The current implementation prioritises:
-
-- explainability;
-- reproducibility;
-- safe public communication;
-- clean project structure;
-- testable applied-AI workflow design.
-
-Any engineering conclusions from the example report should be interpreted as synthetic decision-support outputs only.
-
----
-
-## Citation / acknowledgement
-
-This project was developed as a public portfolio and research-software example for applied AI, sensor data, anomaly detection, and digital-twin-style engineering workflows.
-
-See [`CITATION.cff`](CITATION.cff) for citation metadata.
+If you use this repository as an example or teaching resource, please cite it using the metadata in [`CITATION.cff`](CITATION.cff).
 
 ---
 
 ## License
 
-MIT License. See [`LICENSE`](LICENSE).
+This project is released under the MIT License. See [`LICENSE`](LICENSE).
