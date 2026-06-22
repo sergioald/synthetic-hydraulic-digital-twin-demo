@@ -1,0 +1,35 @@
+# Synthetic scenario configuration only.
+# Values are illustrative and must not be interpreted as real facility parameters.
+
+simulation:
+  duration_hours: 0.4
+  sample_seconds: 10
+  random_seed: 808
+
+synthetic_system:
+  system_name: generic_hydraulic_structural_test_rig
+  pressure_range_bar: [20, 250]
+  flow_range_lpm: [5, 120]
+  motor_speed_range_rpm: [600, 1800]
+  temperature_range_c: [20, 75]
+  reservoir_level_range_pct: [55, 95]
+  command_signal_range_pct: [0, 100]
+  load_demand_range_kn: [0, 1000]
+  actuator_displacement_range_mm: [-50, 50]
+
+energy_model:
+  assumed_min_efficiency: 0.35
+  assumed_max_efficiency: 0.90
+  standby_power_kw: 2.0
+
+anomaly_detection:
+  rolling_window_samples: 12
+  isolation_forest_contamination: 0.05
+  minimum_pressure_bar: 10
+  maximum_temperature_c: 80
+  maximum_missing_rate: 0.05
+
+events:
+  include:
+    - normal
+    - transient_event
